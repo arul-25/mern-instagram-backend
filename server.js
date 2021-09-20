@@ -24,25 +24,15 @@ app.use(cors())
 // DB config
 mongoose.connect(process.env.MONGO_ATLAS)
 mongoose.connection.once("open", () => {
-	console.log("DB connected")
-
 	const changeStream = mongoose.connection.collection("posts").watch()
 	changeStream.on("change", change => {
-		console.log("change triggred on pusher...")
-		console.log(change)
-		console.log("End of change")
-
 		if (change.operationType === "insert") {
-			console.log("triggering pusher")
-
 			const postDetails = change.fullDocument
 			pusher.trigger("posts", "inserted", {
 				user: postDetails.user,
 				caption: postDetails.caption,
 				image: postDetails.image
 			})
-		} else {
-			console.log("Unknown triggering from pusher")
 		}
 	})
 })
