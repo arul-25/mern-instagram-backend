@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(cors())
 
 // DB config
-mongoose.connect(process.env.MONGO_LOCAL)
+mongoose.connect(process.env.MONGO_ATLAS)
 mongoose.connection.once("open", () => {
 	console.log("DB connected")
 
